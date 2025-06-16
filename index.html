@@ -2,11 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Voice-Activated Medication Reminder</title>
-    <link rel="icon" href="data:," />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Enhanced Medication Reminder</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -14,152 +16,199 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     />
     <style>
+      :root {
+        --primary: #4caf50;
+        --primary-dark: #388e3c;
+        --accent: #2196f3;
+        --danger: #ff5252;
+        --warning: #ff9800;
+        --text: #333;
+        --text-light: #666;
+        --bg: #e6f4f1;
+        --card-bg: #ffffff;
+        --border: #d0e2e9;
+        --shadow: rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --info-box-bg: linear-gradient(135deg, #5a9f61, #4caf50);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
         padding: 0;
         font-family: "Roboto", sans-serif;
-        background: linear-gradient(135deg, #e6f4f1, #d0e2e9);
-        color: #333;
+        background: linear-gradient(135deg, var(--bg), #d0e2e9);
+        color: var(--text);
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         flex-direction: column;
-        padding: 0 7.5%;
+        padding: 20px;
+        -webkit-tap-highlight-color: transparent;
+        line-height: 1.6;
       }
+
       .container {
         width: 100%;
-        max-width: 85%;
-        height: auto;
-        background: #ffffff;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        border-radius: 15px;
-        padding: 20px;
+        max-width: 800px;
+        background: var(--card-bg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border-radius: 20px;
+        padding: 25px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        margin: 15% auto;
-      }
-      h2 {
-        color: #4caf50;
-        margin-bottom: 10px;
-        text-align: center;
-        font-size: 1.8em;
-      }
-      .voice-section {
-        margin-top: 10px;
-        text-align: center;
-      }
-      .voice-button {
-        background: linear-gradient(45deg, #4caf50, #388e3c);
-        color: white;
-        font-size: 1.1em;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background 0.3s, transform 0.2s;
-      }
-      .voice-button:hover {
-        background: linear-gradient(45deg, #388e3c, #4caf50);
-        transform: scale(1.05);
-      }
-      .voice-button.stop {
-        background: #ff5252;
-      }
-      .output {
-        background: rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        border-radius: 8px;
-        margin-top: 5px;
-        font-style: italic;
-        color: #333;
-        white-space: pre-wrap;
-      }
-      .form-group {
-        margin-top: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 4px;
-        text-align: center;
-        font-size: 0.9em;
-        color: #333;
-      }
-      input,
-      select {
-        width: 100%;
-        max-width: 80%;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-        background: rgba(0, 0, 0, 0.05);
-        color: #333;
-        font-size: 0.9em;
-        transition: border 0.3s;
-      }
-      input:focus,
-      select:focus {
-        border: 1px solid #4caf50;
-        outline: none;
-      }
-      .btn {
-        width: 100%;
-        max-width: 82%;
-        background: #4caf50;
-        color: white;
-        padding: 12px;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.9em;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s, transform 0.2s;
-      }
-      .btn:hover {
-        background: #388e3c;
-        transform: scale(1.05);
-      }
-      .success-message {
-        color: #4caf50;
-        font-weight: bold;
-        margin-top: 5px;
-        text-align: center;
-        font-size: 0.9em;
-      }
-      .reminder-list,
-      .history-list {
-        margin-top: 20px;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 10px;
-        border-radius: 10px;
-        color: #333;
-      }
-      .reminder-item,
-      .history-item {
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.15);
-        margin-bottom: 10px;
-        border-radius: 8px;
-        font-size: 0.9em;
+        gap: 25px;
+        margin: 20px auto;
+        animation: fadeIn 0.5s ease-out;
+        overflow: hidden;
         position: relative;
-        transition: background-color 0.5s;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        word-wrap: break-word;
       }
-      .reminder-item.alert {
-        background-color: #ff4444 !important;
-        color: #fff !important;
-        font-weight: bold;
-        box-shadow: 0 0 10px 2px #ff4444;
-        animation: pulse 1s infinite alternate;
+
+      /* Modern 3D Info Box - IMPROVED */
+      .info-box-3d {
+        background: var(--info-box-bg);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+        color: white;
+        position: relative;
+        transform-style: preserve-3d;
+        transform: perspective(1000px) rotateX(4deg) rotateY(0deg)
+          translateZ(15px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15),
+          0 3px 10px rgba(0, 0, 0, 0.1), inset 0 0 15px rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        overflow: hidden;
+        transition: var(--transition);
+        z-index: 10;
       }
+
+      .info-box-3d:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0) 50%,
+          rgba(255, 255, 255, 0.1) 100%
+        );
+        z-index: 1;
+      }
+
+      .info-box-3d:hover {
+        transform: perspective(1000px) rotateX(2deg) rotateY(2deg)
+          translateZ(25px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2),
+          0 5px 15px rgba(0, 0, 0, 0.15),
+          inset 0 0 20px rgba(255, 255, 255, 0.25);
+      }
+
+      .info-box-3d h3 {
+        font-size: 1.6rem;
+        margin-top: 0;
+        margin-bottom: 15px;
+        position: relative;
+        text-align: center;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        color: #fff;
+      }
+
+      .info-box-3d p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+        position: relative;
+        z-index: 2;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .info-box-3d .signature {
+        text-align: right;
+        font-weight: 500;
+        font-style: italic;
+        margin-top: 15px;
+        font-size: 1rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .info-box-3d .heart {
+        color: #ffc0cb;
+        animation: pulse 1.5s infinite;
+        display: inline-block;
+      }
+
+      /* Corner accents for 3D effect */
+      .corner-accent {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        z-index: 1;
+      }
+
+      .corner-top-left {
+        top: 0;
+        left: 0;
+        border-top: 3px solid rgba(255, 255, 255, 0.4);
+        border-left: 3px solid rgba(255, 255, 255, 0.4);
+        border-top-left-radius: 16px;
+      }
+
+      .corner-top-right {
+        top: 0;
+        right: 0;
+        border-top: 3px solid rgba(255, 255, 255, 0.4);
+        border-right: 3px solid rgba(255, 255, 255, 0.4);
+        border-top-right-radius: 16px;
+      }
+
+      .corner-bottom-left {
+        bottom: 0;
+        left: 0;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+        border-left: 3px solid rgba(255, 255, 255, 0.4);
+        border-bottom-left-radius: 16px;
+      }
+
+      .corner-bottom-right {
+        bottom: 0;
+        right: 0;
+        border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+        border-right: 3px solid rgba(255, 255, 255, 0.4);
+        border-bottom-right-radius: 16px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
       @keyframes pulse {
         0% {
           box-shadow: 0 0 10px 2px #ff4444;
@@ -168,44 +217,439 @@
           box-shadow: 0 0 20px 6px #ff4444;
         }
       }
-      .reminder-item button,
-      .history-item button {
-        background: transparent;
-        border: none;
-        color: #ff4c4c;
-        cursor: pointer;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        font-size: 0.8em;
-      }
-      .instructions {
-        margin-top: 10px;
-        color: #4caf50;
-        font-size: 0.9em;
-        text-align: center;
-      }
-      @media (max-width: 600px) {
-        .container {
-          padding: 10px;
-          width: 100%;
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
         }
-        .voice-button,
-        .btn {
-          font-size: 0.9em;
-          padding: 10px;
-          width: 100%;
-        }
-        input,
-        select {
-          width: 100%;
-        }
-        h2 {
-          font-size: 1.5em;
+        50% {
+          transform: translateY(-10px);
         }
       }
 
+      .header {
+        text-align: center;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--border);
+        position: relative;
+      }
+
+      .header h1 {
+        color: var(--primary);
+        margin: 0 0 5px;
+        font-size: 2.2em;
+        position: relative;
+        display: inline-block;
+      }
+
+      .header h1:after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary);
+        border-radius: 2px;
+      }
+
+      .instructions {
+        background: rgba(76, 175, 80, 0.1);
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+        margin: 15px 0;
+        color: var(--text);
+        animation: slideIn 0.4s ease-out;
+        box-shadow: 0 4px 6px var(--shadow);
+      }
+
+      .instructions p {
+        margin: 0;
+        font-size: 1em;
+        color: var(--text-light);
+      }
+
+      .instructions b {
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .voice-section {
+        text-align: center;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        animation: slideIn 0.5s ease-out;
+      }
+
+      .voice-button {
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        color: white;
+        font-size: 1.1em;
+        padding: 14px 35px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .voice-button:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+      }
+
+      .voice-button:hover:after {
+        width: 300px;
+        height: 300px;
+      }
+
+      .voice-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(76, 175, 80, 0.4);
+      }
+
+      .voice-button:active {
+        transform: translateY(1px);
+      }
+
+      .voice-button.stop {
+        background: var(--danger);
+        box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+      }
+
+      .output {
+        background: rgba(0, 0, 0, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        font-style: italic;
+        color: var(--text);
+        white-space: pre-wrap;
+        text-align: center;
+        animation: fadeIn 0.4s ease;
+      }
+
+      .form-container {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        animation: slideIn 0.6s ease-out;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .form-title {
+        text-align: center;
+        color: var(--primary);
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.6em;
+        position: relative;
+      }
+
+      .form-title:after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: var(--primary);
+        border-radius: 2px;
+      }
+
+      label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text);
+        font-size: 0.95em;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--text);
+        font-size: 1em;
+        transition: var(--transition);
+      }
+
+      input:focus,
+      select:focus {
+        border: 1px solid var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      }
+
+      .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+      }
+
+      .checkbox-container input {
+        width: auto;
+      }
+
+      .btn {
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+      }
+
+      .btn:hover:after {
+        width: 300px;
+        height: 300px;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(76, 175, 80, 0.4);
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn-danger {
+        background: linear-gradient(45deg, var(--danger), #d32f2f);
+        box-shadow: 0 4px 15px rgba(255, 82, 82, 0.3);
+      }
+
+      .btn-sm {
+        padding: 8px 15px;
+        font-size: 0.85em;
+      }
+
+      .success-message {
+        color: var(--primary);
+        font-weight: bold;
+        text-align: center;
+        font-size: 0.95em;
+        margin-top: 15px;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .section {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        animation: slideIn 0.7s ease-out;
+      }
+
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: var(--primary);
+        font-size: 1.4em;
+      }
+
+      .section-title .actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .reminder-item,
+      .history-item {
+        padding: 15px;
+        background: white;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        font-size: 0.95em;
+        position: relative;
+        transition: var(--transition);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        animation: slideIn 0.4s ease;
+        overflow: hidden;
+      }
+
+      .reminder-item:before,
+      .history-item:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--primary);
+      }
+
+      .reminder-item.alert {
+        background-color: #fff0f0 !important;
+        color: var(--text) !important;
+        font-weight: bold;
+        animation: pulse 1s infinite alternate;
+      }
+
+      .reminder-item.alert:before {
+        background: var(--danger);
+      }
+
+      .reminder-item .priority {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 500;
+        margin-left: 8px;
+      }
+
+      .priority-high {
+        background: #ffebee;
+        color: var(--danger);
+      }
+
+      .priority-medium {
+        background: #fff8e1;
+        color: var(--warning);
+      }
+
+      .priority-low {
+        background: #e8f5e9;
+        color: var(--primary);
+      }
+
+      .reminder-item .time-left,
+      .history-item .time {
+        display: block;
+        margin-top: 8px;
+        font-size: 0.9em;
+        color: var(--text-light);
+      }
+
+      .reminder-item button,
+      .history-item button {
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        color: var(--danger);
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .reminder-item button:hover,
+      .history-item button:hover {
+        background: #ffebee;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .empty-message {
+        text-align: center;
+        padding: 20px;
+        color: var(--text-light);
+        font-style: italic;
+      }
+
+      /* Popups */
       #popupOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .popup {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 20px;
+        max-width: 90%;
+        width: 400px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        position: relative;
+        animation: bounce 0.5s ease;
+      }
+
+      .close-btn {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        border: none;
+        background: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: var(--text-light);
+        transition: var(--transition);
+      }
+
+      .close-btn:hover {
+        color: var(--danger);
+        transform: rotate(90deg);
+      }
+
+      #confirmPopupOverlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -215,116 +659,292 @@
         display: none;
         justify-content: center;
         align-items: center;
-        z-index: 9999;
-      }
-      .popup {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        max-width: 90%;
-        width: 360px;
-        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-        position: relative;
+        z-index: 1001;
         animation: fadeIn 0.3s ease;
       }
-      .close-btn {
-        position: absolute;
-        right: 12px;
-        top: 12px;
-        border: none;
-        background: none;
-        font-size: 1.2em;
-        cursor: pointer;
-        color: #888;
-      }
 
-      #confirmPopupOverlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-      }
       .confirm-popup {
-        background: #fff;
-        padding: 25px 20px;
-        border-radius: 10px;
+        background: var(--card-bg);
+        padding: 30px 25px;
+        border-radius: 20px;
         text-align: center;
         width: 90%;
-        max-width: 350px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-        animation: fadeIn 0.25s ease-in-out;
+        max-width: 400px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        animation: bounce 0.5s ease;
       }
+
       .confirm-popup p {
-        font-size: 1em;
-        margin-bottom: 20px;
-        color: #333;
+        font-size: 1.1em;
+        margin-bottom: 25px;
+        color: var(--text);
+        line-height: 1.5;
       }
+
       .confirm-popup button {
-        background: #4caf50;
+        background: linear-gradient(45deg, var(--primary), var(--primary-dark));
         color: white;
         border: none;
-        border-radius: 6px;
-        padding: 12px 18px;
-        font-size: 0.95em;
-        cursor: pointer;
+        border-radius: 10px;
+        padding: 12px 30px;
+        font-size: 1em;
         font-weight: bold;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
       }
+
       .confirm-popup button:hover {
-        background: #388e3c;
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(76, 175, 80, 0.4);
+      }
+
+      /* Permission button */
+      #permissionBtn {
+        display: none;
+        background: var(--accent);
+        color: white;
+        padding: 14px 35px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1em;
+        margin: 10px auto;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+      }
+
+      #permissionBtn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 20px rgba(33, 150, 243, 0.4);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+          border-radius: 15px;
+        }
+
+        .header h1 {
+          font-size: 1.8em;
+        }
+
+        .form-container,
+        .section {
+          padding: 15px;
+        }
+
+        .voice-button,
+        .btn,
+        #permissionBtn {
+          padding: 12px 25px;
+          width: 100%;
+          max-width: 100%;
+        }
+
+        .section-title {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .section-title .actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+
+        .info-box-3d {
+          padding: 15px;
+        }
+
+        .info-box-3d h3 {
+          font-size: 1.4rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 15px;
+        }
+
+        .header h1 {
+          font-size: 1.6em;
+        }
+
+        .form-title,
+        .section-title {
+          font-size: 1.3em;
+        }
+
+        .reminder-item,
+        .history-item {
+          padding: 12px;
+        }
+
+        .reminder-item button,
+        .history-item button {
+          position: relative;
+          top: 0;
+          right: 0;
+          transform: none;
+          margin-top: 10px;
+          width: auto;
+          height: auto;
+          padding: 6px 12px;
+          border-radius: 6px;
+        }
+
+        .info-box-3d {
+          padding: 15px;
+        }
+
+        .info-box-3d h3 {
+          font-size: 1.3rem;
+        }
+
+        .info-box-3d p {
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Animations for list items */
+      .list-item-enter {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+
+      .list-item-enter-active {
+        opacity: 1;
+        transform: translateX(0);
+        transition: all 0.3s ease;
+      }
+
+      .list-item-exit {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .list-item-exit-active {
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+      }
+
+      /* Floating animation */
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .floating {
+        animation: float 3s ease-in-out infinite;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2>Instructions</h2>
-      <div class="instructions">
-        To set a reminder, say: <b>"Aspirin at 9:30 AM"</b> or
-        <b>"Paracetamol at 7:45 PM"</b>.
+      <div class="header">
+        <h1>💊 Medication Reminder</h1>
+        <div class="instructions">
+          <p>
+            To set a reminder, say: <b>"Aspirin at 9:30 AM"</b> or
+            <b>"Paracetamol at 7:45 PM"</b>.
+          </p>
+        </div>
       </div>
 
+      <button id="permissionBtn">Allow Microphone Access</button>
+
       <div class="voice-section">
-        <button id="voiceBtn" class="voice-button" onclick="toggleMic()">
-          🎤 Start Listening
+        <button id="voiceBtn" class="voice-button floating">
+          <i class="fas fa-microphone"></i> Start Listening
         </button>
         <div id="voice-output" class="output" style="display: none"></div>
       </div>
 
-      <div class="form-group">
-        <h2>Add Medication Reminder</h2>
-        <label for="medName">Medication Name</label>
-        <input type="text" id="medName" placeholder="e.g. Aspirin" />
+      <div class="form-container">
+        <div class="form-group">
+          <h3 class="form-title">Add Medication</h3>
+          <label for="medName">Medication Name</label>
+          <input type="text" id="medName" placeholder="e.g. Aspirin" />
 
-        <label for="reminderTime">Reminder Time</label>
-        <input type="time" id="reminderTime" />
+          <label for="reminderTime">Reminder Time</label>
+          <input type="time" id="reminderTime" />
 
-        <label for="priority">Priority</label>
-        <select id="priority">
-          <option value="">Select priority</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
+          <label for="priority">Priority</label>
+          <select id="priority">
+            <option value="">Select priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
 
-        <label><input type="checkbox" id="repeat" /> Repeat Daily</label>
+          <div class="checkbox-container">
+            <input type="checkbox" id="repeat" />
+            <label for="repeat">Repeat Daily</label>
+          </div>
 
-        <button class="btn" onclick="addReminder()">Add Reminder</button>
-        <div id="success" class="success-message"></div>
+          <button id="addReminderBtn" class="btn">
+            <i class="fas fa-plus-circle"></i> Add Reminder
+          </button>
+          <div id="success" class="success-message"></div>
+        </div>
       </div>
 
-      <div class="reminder-list" id="reminderList" style="display: none">
-        <h3>All Reminders</h3>
+      <div class="section" id="reminderSection" style="display: none">
+        <div class="section-title">
+          <h3>Active Reminders</h3>
+          <div class="actions">
+            <button class="btn btn-sm" onclick="checkAllReminders()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+        </div>
         <div id="reminderItems"></div>
       </div>
 
-      <div class="history-list">
-        <h3>Deleted Reminders History</h3>
+      <div class="section">
+        <div class="section-title">
+          <h3>Deleted Reminders</h3>
+          <div class="actions">
+            <button class="btn btn-sm btn-danger" id="clearHistoryBtn">
+              <i class="fas fa-trash-alt"></i> Clear All
+            </button>
+          </div>
+        </div>
         <div id="historyItems">No deleted reminders yet.</div>
+      </div>
+
+      <!-- IMPROVED 3D Info Box -->
+      <div class="info-box-3d">
+        <div class="corner-accent corner-top-left"></div>
+        <div class="corner-accent corner-top-right"></div>
+        <div class="corner-accent corner-bottom-left"></div>
+        <div class="corner-accent corner-bottom-right"></div>
+
+        <h3>About MediVoice</h3>
+        <p>
+          MediVoice is a smart, voice-activated medication reminder system
+          designed to help individuals manage their medicines effortlessly using
+          natural speech. Whether it's Aspirin at 9:30 AM or Paracetamol at 7:45
+          PM, just say it — and MediVoice takes care of the rest.
+        </p>
+        <p>
+          Powered by modern web technologies and speech recognition, this
+          project was built with social impact in mind during the Hack the Vibe
+          2025 hackathon.
+        </p>
+        <p class="signature">
+          Crafted with <span class="heart">❤️</span> by Keshu
+        </p>
       </div>
 
       <audio id="alarmSound" preload="auto">
@@ -337,7 +957,7 @@
 
     <div id="popupOverlay">
       <div class="popup">
-        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <button class="close-btn" id="closePopupBtn">&times;</button>
         <h3 id="popupTitle">Popup Title</h3>
         <div id="popupContent">This is a popup message.</div>
       </div>
@@ -346,275 +966,617 @@
     <div id="confirmPopupOverlay">
       <div class="confirm-popup">
         <p id="confirmMessage">
-          It’s time for your medicine — have you taken it yet?
+          It's time for your medicine — have you taken it yet?
         </p>
-        <button onclick="confirmTaken()">Yes, I took it already.</button>
+        <button id="confirmTakenBtn">Yes, I took it already.</button>
       </div>
     </div>
 
     <script>
-      let isListening = false;
-      let recognition = null;
-      let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
-      let deletedReminders = JSON.parse(localStorage.getItem('deletedReminders')) || [];
-      let activeAlerts = new Set();
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize variables
+        let isListening = false;
+        let recognition = null;
+        let reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+        let deletedReminders =
+          JSON.parse(localStorage.getItem("deletedReminders")) || [];
+        let activeAlerts = new Set();
+        let confirmReminderId = null;
+        let confirmReminderRepeat = false;
+        let audioContextInitialized = false;
+        let audioContext = null;
 
-      function speak(text) {
-        const utter = new SpeechSynthesisUtterance(text);
-        window.speechSynthesis.speak(utter);
-      }
+        // DOM elements
+        const voiceBtn = document.getElementById("voiceBtn");
+        const addReminderBtn = document.getElementById("addReminderBtn");
+        const closePopupBtn = document.getElementById("closePopupBtn");
+        const confirmTakenBtn = document.getElementById("confirmTakenBtn");
+        const permissionBtn = document.getElementById("permissionBtn");
+        const alarmSound = document.getElementById("alarmSound");
+        const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+        const reminderSection = document.getElementById("reminderSection");
 
-      function toggleMic() {
-        const button = document.getElementById("voiceBtn");
-        const output = document.getElementById("voice-output");
-        output.style.display = 'block';
-        output.textContent = "";
+        // Check if on mobile
+        const isMobile =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
 
-        if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-          showPopup("Error", "Speech Recognition not supported.");
-          return;
+        // Show permission button on mobile
+        if (isMobile) {
+          permissionBtn.style.display = "block";
+          voiceBtn.style.display = "none";
         }
 
-        if (!recognition) {
-          recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-          recognition.lang = 'en-US';
+        // Initialize event listeners
+        voiceBtn.addEventListener("click", toggleMic);
+        addReminderBtn.addEventListener("click", addReminder);
+        closePopupBtn.addEventListener("click", closePopup);
+        confirmTakenBtn.addEventListener("click", confirmTaken);
+        permissionBtn.addEventListener("click", requestMicrophonePermission);
+        clearHistoryBtn.addEventListener("click", clearAllHistory);
+
+        // Initial render
+        renderReminders();
+        renderHistory();
+
+        // Request microphone permission (mobile)
+        function requestMicrophonePermission() {
+          if (
+            !(
+              "webkitSpeechRecognition" in window ||
+              "SpeechRecognition" in window
+            )
+          ) {
+            showPopup(
+              "Error",
+              "Speech Recognition not supported on this device."
+            );
+            return;
+          }
+
+          // Try to start recognition which will prompt for permission
+          recognition = new (window.SpeechRecognition ||
+            window.webkitSpeechRecognition)();
+          recognition.lang = "en-US";
           recognition.interimResults = false;
 
-          recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript.toLowerCase().trim();
-            output.textContent = "You said: " + transcript;
-            try {
-              const parts = transcript.split(" at ");
-              if (parts.length !== 2) throw new Error("Invalid format");
-
-              const med = parts[0].trim();
-              const timeRaw = parts[1].replace(/a\.?m\.?|p\.?m\.?/g, m => m.includes("p") ? "pm" : "am").replace(/[\s:]/g, '');
-              const match = timeRaw.match(/^(\d{1,2})(\d{2})(am|pm)$/);
-              if (!match) throw new Error("Time format");
-
-              let hour = parseInt(match[1]), minute = parseInt(match[2]);
-              if (match[3] === "pm" && hour < 12) hour += 12;
-              if (match[3] === "am" && hour === 12) hour = 0;
-
-              const now = new Date();
-              let remTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-              if (remTime < now) remTime.setDate(remTime.getDate() + 1);
-
-              const time = ${String(remTime.getHours()).padStart(2, '0')}:${String(remTime.getMinutes()).padStart(2, '0')};
-
-              reminders.push({
-                med,
-                time,
-                priority: "Medium",
-                repeat: false,
-                id: Date.now() + Math.random().toString(36),
-                timestamp: remTime.getTime()
-              });
-
-              localStorage.setItem('reminders', JSON.stringify(reminders)); // Save to local storage
-              renderReminders();
-              const hour12 = remTime.getHours() % 12 || 12;
-              const ampm = remTime.getHours() >= 12 ? "PM" : "AM";
-              speak(${med} reminder set at ${hour12}:${String(remTime.getMinutes()).padStart(2, '0')} ${ampm});
-              showPopup("Reminder Set", ${med} set for ${hour12}:${String(remTime.getMinutes()).padStart(2, '0')} ${ampm});
-            } catch (e) {
-              speak("Sorry, I didn't catch that. Try saying: Paracetamol at 9 30 AM.");
-              showPopup("Error", "Try saying: Paracetamol at 9:30 AM");
+          recognition.onerror = function (event) {
+            if (event.error === "not-allowed") {
+              showPopup(
+                "Permission Required",
+                "Please allow microphone access in your browser settings."
+              );
             }
           };
 
-          recognition.onend = () => {
-            isListening = false;
-            button.textContent = "🎤 Start Listening";
-            button.classList.remove("stop");
-          };
-        }
-
-        if (!isListening) {
           recognition.start();
-          isListening = true;
-          button.textContent = "⏹ Stop Listening";
-          button.classList.add("stop");
-          output.textContent = "🎙 Listening... Speak your reminder.";
-        } else {
-          recognition.stop();
-          isListening = false;
-          button.textContent = "🎤 Start Listening";
-          button.classList.remove("stop");
-        }
-      }
+          recognition.abort(); // We just wanted the permission prompt
 
-      function addReminder() {
-        const med = document.getElementById("medName").value.trim();
-        const time = document.getElementById("reminderTime").value;
-        const priority = document.getElementById("priority").value;
-        const repeat = document.getElementById("repeat").checked;
-
-        if (!med || !time || !priority) {
-          showPopup("Missing Fields", "Please fill all fields and choose a priority.");
-          return;
+          // If we get here, permission was probably granted
+          permissionBtn.style.display = "none";
+          voiceBtn.style.display = "block";
         }
 
-        const now = new Date();
-        const [hour, minute] = time.split(":").map(Number);
-        let remTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute);
-        if (remTime < now) remTime.setDate(remTime.getDate() + 1);
+        // Initialize audio context for mobile
+        function initAudioContext() {
+          if (audioContextInitialized) return;
 
-        const newReminder = { med, time, priority, repeat, id: Date.now() + Math.random().toString(36), timestamp: remTime.getTime() };
-        reminders.push(newReminder);
-        localStorage.setItem('reminders', JSON.stringify(reminders)); // Save to local storage
-        renderReminders();
+          // Create an audio context if not already created
+          if (!audioContext) {
+            audioContext = new (window.AudioContext ||
+              window.webkitAudioContext)();
+          }
 
-        showPopup("Reminder Added", ${med} set for ${time} (${priority}));
-        document.getElementById("medName").value = "";
-        document.getElementById("reminderTime").value = "";
-        document.getElementById("priority").value = "";
-        document.getElementById("repeat").checked = false;
-      }
+          // Resume the audio context on user interaction
+          document.body.addEventListener(
+            "touchstart",
+            function () {
+              if (audioContext && audioContext.state === "suspended") {
+                audioContext.resume();
+              }
+            },
+            { once: true }
+          );
 
-      function renderReminders() {
-        const list = document.getElementById("reminderItems");
-        const container = document.getElementById("reminderList");
-        list.innerHTML = "";
-        if (reminders.length === 0) {
-          container.style.display = "none";
-          return;
+          audioContextInitialized = true;
         }
-        container.style.display = "block";
-        reminders.forEach(r => {
-          const div = document.createElement("div");
-          div.className = "reminder-item";
-          div.id = reminder-${r.id};
-          div.innerHTML = `<b>${r.med}</b> at <b>${r.time}</b> - ${r.priority} ${r.repeat ? "(Daily)" : ""}<br>
-          <span class="time-left" id="time-left-${r.id}">Calculating...</span>
-          <button onclick="deleteReminder('${r.id}')"><i class="fas fa-trash"></i></button>`;
-          list.appendChild(div);
-        });
-      }
 
-      function deleteReminder(id) {
-        const r = reminders.find(x => x.id === id);
-        if (r) {
-          deletedReminders.push(r);
-          localStorage.setItem('deletedReminders', JSON.stringify(deletedReminders)); // Save deleted reminders to local storage
+        // Speech synthesis function
+        function speak(text) {
+          initAudioContext();
+          const utter = new SpeechSynthesisUtterance(text);
+          window.speechSynthesis.speak(utter);
         }
-        reminders = reminders.filter(x => x.id !== id);
-        activeAlerts.delete(id);
-                localStorage.setItem('reminders', JSON.stringify(reminders)); // Update local storage
-        renderReminders();
-        renderHistory();
-      }
 
-      function renderHistory() {
-        const list = document.getElementById("historyItems");
-        if (deletedReminders.length === 0) {
-          list.innerHTML = "No deleted reminders yet.";
-        } else {
+        // Toggle microphone function
+        function toggleMic() {
+          const button = document.getElementById("voiceBtn");
+          const output = document.getElementById("voice-output");
+          output.style.display = "block";
+          output.textContent = "";
+
+          if (
+            !(
+              "webkitSpeechRecognition" in window ||
+              "SpeechRecognition" in window
+            )
+          ) {
+            showPopup(
+              "Error",
+              "Speech Recognition not supported on this device."
+            );
+            return;
+          }
+
+          if (!recognition) {
+            recognition = new (window.SpeechRecognition ||
+              window.webkitSpeechRecognition)();
+            recognition.lang = "en-US";
+            recognition.interimResults = false;
+
+            recognition.onresult = (event) => {
+              const transcript = event.results[0][0].transcript
+                .toLowerCase()
+                .trim();
+              output.textContent = "You said: " + transcript;
+              try {
+                const parts = transcript.split(" at ");
+                if (parts.length !== 2) throw new Error("Invalid format");
+
+                const med = parts[0].trim();
+                const timeRaw = parts[1]
+                  .replace(/a\.?m\.?|p\.?m\.?/g, (m) =>
+                    m.includes("p") ? "pm" : "am"
+                  )
+                  .replace(/[\s:]/g, "");
+                const match = timeRaw.match(/^(\d{1,2})(\d{2})(am|pm)$/);
+                if (!match) throw new Error("Time format");
+
+                let hour = parseInt(match[1]),
+                  minute = parseInt(match[2]);
+                if (match[3] === "pm" && hour < 12) hour += 12;
+                if (match[3] === "am" && hour === 12) hour = 0;
+
+                const now = new Date();
+                let remTime = new Date(
+                  now.getFullYear(),
+                  now.getMonth(),
+                  now.getDate(),
+                  hour,
+                  minute
+                );
+                if (remTime < now) remTime.setDate(remTime.getDate() + 1);
+
+                const time = `${String(remTime.getHours()).padStart(
+                  2,
+                  "0"
+                )}:${String(remTime.getMinutes()).padStart(2, "0")}`;
+
+                reminders.push({
+                  med,
+                  time,
+                  priority: "Medium",
+                  repeat: false,
+                  id: Date.now() + Math.random().toString(36),
+                  timestamp: remTime.getTime(),
+                });
+
+                localStorage.setItem("reminders", JSON.stringify(reminders));
+                renderReminders();
+                const hour12 = remTime.getHours() % 12 || 12;
+                const ampm = remTime.getHours() >= 12 ? "PM" : "AM";
+                speak(
+                  `${med} reminder set at ${hour12}:${String(
+                    remTime.getMinutes()
+                  ).padStart(2, "0")} ${ampm}`
+                );
+                showPopup(
+                  "Reminder Set",
+                  `${med} set for ${hour12}:${String(
+                    remTime.getMinutes()
+                  ).padStart(2, "0")} ${ampm}`
+                );
+              } catch (e) {
+                speak(
+                  "Sorry, I didn't catch that. Try saying: Paracetamol at 9 30 AM."
+                );
+                showPopup("Error", "Try saying: Paracetamol at 9:30 AM");
+              }
+            };
+
+            recognition.onerror = function (event) {
+              if (event.error === "not-allowed" && isMobile) {
+                permissionBtn.style.display = "block";
+                voiceBtn.style.display = "none";
+                showPopup(
+                  "Permission Required",
+                  "Microphone access is required for voice commands. Please allow microphone access."
+                );
+              }
+            };
+
+            recognition.onend = () => {
+              isListening = false;
+              button.innerHTML =
+                '<i class="fas fa-microphone"></i> Start Listening';
+              button.classList.remove("stop");
+            };
+          }
+
+          if (!isListening) {
+            try {
+              recognition.start();
+              isListening = true;
+              button.innerHTML = '<i class="fas fa-stop"></i> Stop Listening';
+              button.classList.add("stop");
+              output.textContent = "🎙 Listening... Speak your reminder.";
+            } catch (e) {
+              showPopup(
+                "Error",
+                "Could not start microphone. Please try again."
+              );
+            }
+          } else {
+            recognition.stop();
+            isListening = false;
+            button.innerHTML =
+              '<i class="fas fa-microphone"></i> Start Listening';
+            button.classList.remove("stop");
+          }
+        }
+
+        // Add reminder function
+        function addReminder() {
+          const med = document.getElementById("medName").value.trim();
+          const time = document.getElementById("reminderTime").value;
+          const priority = document.getElementById("priority").value;
+          const repeat = document.getElementById("repeat").checked;
+
+          if (!med || !time || !priority) {
+            showPopup(
+              "Missing Fields",
+              "Please fill all fields and choose a priority."
+            );
+            return;
+          }
+
+          const now = new Date();
+          const [hour, minute] = time.split(":").map(Number);
+          let remTime = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            hour,
+            minute
+          );
+          if (remTime < now) remTime.setDate(remTime.getDate() + 1);
+
+          const newReminder = {
+            med,
+            time,
+            priority,
+            repeat,
+            id: Date.now() + Math.random().toString(36),
+            timestamp: remTime.getTime(),
+          };
+          reminders.push(newReminder);
+          localStorage.setItem("reminders", JSON.stringify(reminders));
+          renderReminders();
+
+          showPopup("Reminder Added", `${med} set for ${time} (${priority})`);
+          document.getElementById("medName").value = "";
+          document.getElementById("reminderTime").value = "";
+          document.getElementById("priority").value = "";
+          document.getElementById("repeat").checked = false;
+        }
+
+        // Render reminders function
+        function renderReminders() {
+          const list = document.getElementById("reminderItems");
+          const container = document.getElementById("reminderSection");
           list.innerHTML = "";
-          deletedReminders.forEach(r => {
+
+          if (reminders.length === 0) {
+            container.style.display = "none";
+            return;
+          }
+
+          container.style.display = "block";
+          reminders.forEach((r) => {
             const div = document.createElement("div");
-            div.className = "history-item";
-            div.innerHTML = <b>${r.med}</b> at <b>${r.time}</b> - ${r.priority};
+            div.className = "reminder-item";
+            div.id = `reminder-${r.id}`;
+
+            // Add priority class
+            const priorityClass = `priority-${r.priority.toLowerCase()}`;
+
+            div.innerHTML = `
+            <b>${r.med}</b>
+            <span class="priority ${priorityClass}">${r.priority}</span>
+            <span class="time-left" id="time-left-${r.id}">
+              ${r.repeat ? "Daily at " : "At "} ${r.time}
+            </span>
+            <button onclick="deleteReminder('${r.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          `;
             list.appendChild(div);
           });
         }
-      }
 
-      // Load reminders and deleted reminders from local storage on page load
-      window.onload = function() {
-        renderReminders();
-        renderHistory();
-      };
+        // Delete reminder function
+        function deleteReminder(id) {
+          const rIndex = reminders.findIndex((x) => x.id === id);
+          if (rIndex !== -1) {
+            const r = reminders[rIndex];
+            deletedReminders.push(r);
+            localStorage.setItem(
+              "deletedReminders",
+              JSON.stringify(deletedReminders)
+            );
 
-      function getTimeLeftString(reminder) {
-        const now = new Date();
-        let remTime = reminder.timestamp ? new Date(reminder.timestamp) : new Date();
-        if (reminder.repeat && remTime < now) remTime.setDate(remTime.getDate() + 1);
-        const diff = remTime - now;
-        if (diff < 0 && !reminder.repeat) return "Time passed";
-        const s = Math.floor(diff / 1000);
-        const h = Math.floor(s / 3600);
-        const m = Math.floor((s % 3600) / 60);
-        const sec = s % 60;
-        return ${h > 0 ? h + "h " : ""}${m > 0 ? m + "m " : ""}${sec}s;
-      }
+            // Remove with animation
+            const item = document.getElementById(`reminder-${id}`);
+            if (item) {
+              item.style.opacity = 0;
+              item.style.transform = "translateX(20px)";
+              setTimeout(() => {
+                reminders.splice(rIndex, 1);
+                localStorage.setItem("reminders", JSON.stringify(reminders));
+                renderReminders();
+                renderHistory();
+              }, 300);
+            } else {
+              reminders.splice(rIndex, 1);
+              localStorage.setItem("reminders", JSON.stringify(reminders));
+              renderReminders();
+              renderHistory();
+            }
+          }
+          activeAlerts.delete(id);
+        }
 
-      function triggerAlert(reminder) {
-        const reminderDiv = document.getElementById(reminder-${reminder.id});
-        if (reminderDiv) reminderDiv.classList.add("alert");
-
-        const alarm = document.getElementById("alarmSound");
-        let repeatCount = reminder.priority === "High" ? 6 : reminder.priority === "Medium" ? 4 : 2;
-        let spokenCount = 0;
-
-        function repeatAlert() {
-          if (spokenCount < repeatCount) {
-            alarm.play().catch(() => {});
-            speak(It's time to take your ${reminder.med});
-            spokenCount++;
-            setTimeout(repeatAlert, 2500);
-          } else {
-            showConfirmPopup(reminder.med, reminder.id, reminder.repeat);
+        // Delete history item
+        function deleteHistoryItem(index) {
+          // Remove with animation
+          const historyItems = document.querySelectorAll(".history-item");
+          if (historyItems[index]) {
+            historyItems[index].style.opacity = 0;
+            historyItems[index].style.transform = "translateX(20px)";
+            setTimeout(() => {
+              deletedReminders.splice(index, 1);
+              localStorage.setItem(
+                "deletedReminders",
+                JSON.stringify(deletedReminders)
+              );
+              renderHistory();
+            }, 300);
           }
         }
 
-        repeatAlert();
-      }
-
-      function checkReminders() {
-        const now = new Date();
-        reminders.forEach(r => {
-          let remTime = r.timestamp ? new Date(r.timestamp) : new Date();
-          if (r.repeat && remTime < now) remTime.setDate(remTime.getDate() + 1);
-          const diffSec = Math.floor((remTime - now) / 1000);
-          const leftSpan = document.getElementById(time-left-${r.id});
-          if (leftSpan) {
-            leftSpan.textContent = diffSec > 0 ? "Time left: " + getTimeLeftString(r) : "Time left: Now!";
+        // Clear all history
+        function clearAllHistory() {
+          if (deletedReminders.length === 0) {
+            showPopup(
+              "History Empty",
+              "There are no deleted reminders to clear."
+            );
+            return;
           }
 
-          if (diffSec >= 0 && diffSec <= 5 && !activeAlerts.has(r.id)) {
-            activeAlerts.add(r.id);
-            triggerAlert(r);
-          }
+          // Animation effect
+          const historyContainer = document.getElementById("historyItems");
+          historyContainer.style.opacity = 0;
+          historyContainer.style.transform = "translateY(20px)";
 
-          if (diffSec < 0 || diffSec > 5) {
-            activeAlerts.delete(r.id);
-            const d = document.getElementById(reminder-${r.id});
-            if (d && d.classList.contains("alert")) d.classList.remove("alert");
-          }
-        });
-      }
-
-      setInterval(checkReminders, 1000);
-
-      function showPopup(title, message) {
-        document.getElementById("popupTitle").textContent = title;
-        document.getElementById("popupContent").textContent = message;
-        document.getElementById("popupOverlay").style.display = "flex";
-      }
-
-      function closePopup() {
-        document.getElementById("popupOverlay").style.display = "none";
-      }
-
-      let confirmReminderId = null;
-      let confirmReminderRepeat = false;
-
-      function showConfirmPopup(med, id, repeat) {
-        confirmReminderId = id;
-        confirmReminderRepeat = repeat;
-        document.getElementById("confirmMessage").textContent = It’s time for your ${med} — have you taken it yet?;
-        document.getElementById("confirmPopupOverlay").style.display = "flex";
-      }
-
-      function confirmTaken() {
-        document.getElementById("confirmPopupOverlay").style.display = "none";
-        if (!confirmReminderRepeat && confirmReminderId) {
-          deleteReminder(confirmReminderId);
+          setTimeout(() => {
+            deletedReminders = [];
+            localStorage.setItem(
+              "deletedReminders",
+              JSON.stringify(deletedReminders)
+            );
+            renderHistory();
+            historyContainer.style.opacity = 1;
+            historyContainer.style.transform = "translateY(0)";
+            showPopup(
+              "History Cleared",
+              "All deleted reminders have been removed."
+            );
+          }, 300);
         }
-        confirmReminderId = null;
-        confirmReminderRepeat = false;
-      }
+
+        // Render history function
+        function renderHistory() {
+          const list = document.getElementById("historyItems");
+          if (deletedReminders.length === 0) {
+            list.innerHTML =
+              '<div class="empty-message">No deleted reminders yet.</div>';
+            return;
+          }
+
+          list.innerHTML = "";
+          deletedReminders.forEach((r, index) => {
+            const div = document.createElement("div");
+            div.className = "history-item";
+            div.innerHTML = `
+            <b>${r.med}</b>
+            <span class="time">${r.time} - ${r.priority} ${
+              r.repeat ? "(Daily)" : ""
+            }</span>
+            <button onclick="deleteHistoryItem(${index})">
+              <i class="fas fa-times"></i>
+            </button>
+          `;
+            list.appendChild(div);
+          });
+        }
+
+        // Get time left string function
+        function getTimeLeftString(reminder) {
+          const now = new Date();
+          let remTime = reminder.timestamp
+            ? new Date(reminder.timestamp)
+            : new Date();
+          if (reminder.repeat && remTime < now)
+            remTime.setDate(remTime.getDate() + 1);
+          const diff = remTime - now;
+          if (diff < 0 && !reminder.repeat) return "Time passed";
+          const s = Math.floor(diff / 1000);
+          const h = Math.floor(s / 3600);
+          const m = Math.floor((s % 3600) / 60);
+          const sec = s % 60;
+          return `In ${h > 0 ? h + "h " : ""}${m > 0 ? m + "m " : ""}${sec}s`;
+        }
+
+        // Trigger alert function
+        function triggerAlert(reminder) {
+          const reminderDiv = document.getElementById(
+            `reminder-${reminder.id}`
+          );
+          if (reminderDiv) reminderDiv.classList.add("alert");
+
+          initAudioContext(); // Ensure audio is initialized
+
+          const alarm = document.getElementById("alarmSound");
+          let repeatCount =
+            reminder.priority === "High"
+              ? 6
+              : reminder.priority === "Medium"
+              ? 4
+              : 2;
+          let spokenCount = 0;
+
+          function repeatAlert() {
+            if (spokenCount < repeatCount) {
+              // Play alarm sound
+              alarm.play().catch((e) => {
+                console.log("Audio play failed, trying again:", e);
+                // On mobile, we need user interaction first
+                if (isMobile) {
+                  showPopup("Alert", `It's time to take your ${reminder.med}!`);
+                }
+                setTimeout(() => alarm.play(), 500);
+              });
+
+              // Speak the reminder
+              speak(`It's time to take your ${reminder.med}`);
+              spokenCount++;
+              setTimeout(repeatAlert, 2500);
+            } else {
+              showConfirmPopup(reminder.med, reminder.id, reminder.repeat);
+            }
+          }
+
+          repeatAlert();
+        }
+
+        // Check reminders function
+        function checkReminders() {
+          const now = new Date();
+          reminders.forEach((r) => {
+            let remTime = r.timestamp ? new Date(r.timestamp) : new Date();
+            if (r.repeat && remTime < now)
+              remTime.setDate(remTime.getDate() + 1);
+            const diffSec = Math.floor((remTime - now) / 1000);
+            const leftSpan = document.getElementById(`time-left-${r.id}`);
+            if (leftSpan) {
+              if (diffSec > 0) {
+                leftSpan.textContent = `${r.repeat ? "Daily at " : "At "} ${
+                  r.time
+                } (${getTimeLeftString(r)})`;
+              } else {
+                leftSpan.textContent = `${r.repeat ? "Daily at " : "At "} ${
+                  r.time
+                } (Now!)`;
+              }
+            }
+
+            if (diffSec >= 0 && diffSec <= 5 && !activeAlerts.has(r.id)) {
+              activeAlerts.add(r.id);
+              triggerAlert(r);
+            }
+
+            if (diffSec < 0 || diffSec > 5) {
+              activeAlerts.delete(r.id);
+              const d = document.getElementById(`reminder-${r.id}`);
+              if (d && d.classList.contains("alert"))
+                d.classList.remove("alert");
+            }
+          });
+        }
+
+        // Check all reminders manually
+        function checkAllReminders() {
+          showPopup("Refreshing", "Checking all reminders...");
+          setTimeout(() => {
+            checkReminders();
+            showPopup("Refreshed", "All reminders have been checked.");
+          }, 1000);
+        }
+
+        // Show popup function
+        function showPopup(title, message) {
+          document.getElementById("popupTitle").textContent = title;
+          document.getElementById("popupContent").textContent = message;
+          document.getElementById("popupOverlay").style.display = "flex";
+
+          // Auto-close after 3 seconds
+          setTimeout(() => {
+            if (
+              document.getElementById("popupOverlay").style.display === "flex"
+            ) {
+              closePopup();
+            }
+          }, 3000);
+        }
+
+        // Close popup function
+        function closePopup() {
+          document.getElementById("popupOverlay").style.display = "none";
+        }
+
+        // Show confirm popup function
+        function showConfirmPopup(med, id, repeat) {
+          confirmReminderId = id;
+          confirmReminderRepeat = repeat;
+          document.getElementById(
+            "confirmMessage"
+          ).textContent = `It's time for your ${med} — have you taken it yet?`;
+          document.getElementById("confirmPopupOverlay").style.display = "flex";
+        }
+
+        // Confirm taken function
+        function confirmTaken() {
+          document.getElementById("confirmPopupOverlay").style.display = "none";
+          if (!confirmReminderRepeat && confirmReminderId) {
+            deleteReminder(confirmReminderId);
+          }
+          confirmReminderId = null;
+          confirmReminderRepeat = false;
+        }
+
+        // Make functions available globally for inline onclick
+        window.deleteReminder = deleteReminder;
+        window.deleteHistoryItem = deleteHistoryItem;
+
+        // Start checking reminders
+        setInterval(checkReminders, 1000);
+
+        // Initialize audio context on first user interaction
+        document.body.addEventListener(
+          "click",
+          function () {
+            initAudioContext();
+          },
+          { once: true }
+        );
+
+        // Add floating animation to mic button
+        setInterval(() => {
+          voiceBtn.classList.toggle("floating");
+        }, 3000);
+      });
     </script>
   </body>
 </html>
